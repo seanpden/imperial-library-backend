@@ -1,17 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/seanpden/imperial-library-backend/internal/routes"
 )
 
 func main() {
-	fmt.Println("Hello world!")
+	// log.Println("Opening database...")
+	// db, err := sql.Open("sqlite3", "./database.db")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	println("Setting up router...")
+	// log.Println("Pinging database...")
+	// pingerr := db.Ping()
+	// if pingerr != nil {
+	// 	log.Fatal(pingerr)
+	// }
+	// log.Println("Connected!")
+
+	log.Println("Setting up router...")
 	r := routes.SetupRouter()
 
-	println("Running...")
+	log.Println("Running application!")
 	r.Run()
 }

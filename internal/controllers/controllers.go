@@ -8,7 +8,12 @@ import (
 )
 
 func HomeReponse(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, models.ReadBookContent())
+	value, err := models.GetAllBookInfos()
+	if err != nil {
+		println(err.Error())
+		return
+	}
+	c.IndentedJSON(http.StatusOK, value)
 }
 
 func GetBookContent(c *gin.Context) {
