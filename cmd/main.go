@@ -8,19 +8,6 @@ import (
 )
 
 func main() {
-	// log.Println("Opening database...")
-	// db, err := sql.Open("sqlite3", "./database.db")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// log.Println("Pinging database...")
-	// pingerr := db.Ping()
-	// if pingerr != nil {
-	// 	log.Fatal(pingerr)
-	// }
-	// log.Println("Connected!")
-
 	log.Println("Setting up router...")
 	r := routes.SetupRouter()
 

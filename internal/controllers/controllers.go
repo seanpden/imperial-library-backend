@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,18 +10,29 @@ import (
 )
 
 func HomeReponse(c *gin.Context) {
-	value, err := models.GetAllBookInfos()
+	msg := map[string]string{"message": "Home!"}
+	c.IndentedJSON(http.StatusOK, msg)
+}
+
+func GetAllBooks(c *gin.Context) {
+	value, err := models.GetAllBooks()
 	if err != nil {
-		println(err.Error())
+		log.Panic(err.Error())
 		return
 	}
 	c.IndentedJSON(http.StatusOK, value)
 }
 
-func GetBookContent(c *gin.Context) {
-	c.JSON(http.StatusOK, "book content")
-}
+func GetBooksFuzzy(c *gin.Context) {
+	titleq := c.Query("title")
+	authorq := c.Query("author")
+	textq := c.Query("text")
 
-func GetBookInfo(c *gin.Context) {
-	c.JSON(http.StatusOK, "book info")
+	fmt.Printf("title: %s, author: %s, text: %s\n", titleq, authorq, textq)
+	value, err := models.GetBooksFuzzy(titleq, authorq, textq)
+	if err != nil {
+		log.Panic(err.Error())
+		return
+	}
+	c.IndentedJSON(http.StatusOK, value)
 }

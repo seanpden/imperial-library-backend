@@ -5,26 +5,13 @@ import (
 	"log"
 )
 
-type BookContent struct {
-	Link_To_Content string `json:"link_to_content"`
-	Author          string `json:"author"`
-	Comment         string `json:"comment"`
-	Text            string `json:"text"`
-}
-
-func (b *BookContent) TableName() string {
-	return "book_content"
-}
-
-type BookInfo struct {
+type Book struct {
 	Title           string `json:"title"`
-	Link_To_Content string `json:"link_to_content"`
 	Author          string `json:"author"`
 	Summary         string `json:"summary"`
-}
-
-func (b *BookInfo) TableName() string {
-	return "book_info"
+	Link_To_Content string `json:"link_to_content"`
+	Comment         string `json:"comment"`
+	Text            string `json:"text"`
 }
 
 type PGDBConfig struct {
@@ -36,8 +23,8 @@ type PGDBConfig struct {
 	PGUSER       string
 }
 
-type ConnectionString struct {
-	CONNECTIONSTRING string
+func (pg *PGDBConfig) ConstructCNXNSTR() string {
+	return ""
 }
 
 func OpenDatabase() *sql.DB {
