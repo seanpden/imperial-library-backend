@@ -1,9 +1,7 @@
 package models
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -11,23 +9,6 @@ import (
 // Read all book info
 // Read a specific book info
 // db, err = sql.Open("sqlite3", "./database.db")
-
-func OpenDatabase() *sql.DB {
-	log.Println("Opening database...")
-	db, err := sql.Open("sqlite3", "./database.db")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Pinging database...")
-	pingerr := db.Ping()
-	if pingerr != nil {
-		log.Fatal(pingerr)
-	}
-	log.Println("Connected!")
-
-	return db
-}
 
 func GetAllBookInfos() ([]BookInfo, error) {
 	db := OpenDatabase()
