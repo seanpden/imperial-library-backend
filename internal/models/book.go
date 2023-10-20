@@ -6,11 +6,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Read all book info
-// Read a specific book info
+var db = OpenDatabase()
 
 func GetAllBooks() ([]Book, error) {
-	db := OpenDatabase()
 	var books []Book
 
 	query := `
@@ -51,7 +49,6 @@ func GetAllBooks() ([]Book, error) {
 }
 
 func GetBooksFuzzy(titleq string, authorq string, textq string) ([]Book, error) {
-	db := OpenDatabase()
 	var books []Book
 
 	query := `

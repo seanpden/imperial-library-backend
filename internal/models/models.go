@@ -24,13 +24,19 @@ type PGDBConfig struct {
 }
 
 func (pg *PGDBConfig) ConstructCNXNSTR() string {
-	return ""
+	return "./internal/models/database.db"
+}
+
+func ConstructDBConnection() string {
+	dbc := PGDBConfig{}
+	cnxnstr := dbc.ConstructCNXNSTR()
+	return cnxnstr
 }
 
 func OpenDatabase() *sql.DB {
 	log.Println("Opening database...")
-	db, err := sql.Open("sqlite3", "./internal/models/database.db")
-	// db, err := sql.Open("sqlite3", "../../cmd/database.db")
+	cnxnstr := ConstructDBConnection()
+	db, err := sql.Open("sqlite3", cnxnstr)
 	if err != nil {
 		log.Fatal(err)
 	}

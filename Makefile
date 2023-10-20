@@ -1,3 +1,5 @@
+include .env
+
 compile:
 	go build -C cmd/ -o ../build/main
 
@@ -6,3 +8,4 @@ run: compile
 
 clean:
 	rm build/main
+

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -28,7 +27,6 @@ func GetBooksFuzzy(c *gin.Context) {
 	authorq := c.Query("author")
 	textq := c.Query("text")
 
-	fmt.Printf("title: %s, author: %s, text: %s\n", titleq, authorq, textq)
 	value, err := models.GetBooksFuzzy(titleq, authorq, textq)
 	if err != nil {
 		log.Panic(err.Error())
