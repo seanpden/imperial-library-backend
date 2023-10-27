@@ -48,7 +48,7 @@ func GetAllBooks() ([]Book, error) {
 	return books, nil
 }
 
-func GetBooksFuzzy(titleq string, authorq string, textq string) ([]Book, error) {
+func GetBooksFuzzyAnd(titleq string, authorq string, textq string) ([]Book, error) {
 	var books []Book
 
 	query := `
@@ -89,6 +89,50 @@ func GetBooksFuzzy(titleq string, authorq string, textq string) ([]Book, error) 
 
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("GetBookInfoFuzzy: %v", err)
+	}
+
+	return books, nil
+}
+
+func GetBooksFuzzyOr(q string) ([]Book, error) {
+	var books []Book
+
+	query := `
+  SELECT
+    TRIM(i.title) as [i.title],
+    COALESCE(c.author, '') as [c.author], -- cleaner
+    TRIM(COALESCE(i.summary, '')) as [i.summary],
+    c.link_to_content,
+    COALESCE(c.comment, '') as [c.comment],
+    c.text
+  FROM 
+    book_content c,
+    book_info i
+  WHERE 
+	(i.link_to_content = c.link_to_content)
+    and (i.title like ?
+    or c.author like ?
+    or c.text like ?)
+    
+  `
+
+	q = fmt.Sprintf("%%%s%%", q)
+	rows, err := db.Query(query, q, q, q)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var book Book
+		if err := rows.Scan(&book.Title, &book.Author, &book.Summary, &book.Link_To_Content, &book.Comment, &book.Text); err != nil {
+			return nil, fmt.Errorf("GetBookInfoFuzzyOr: %v", err)
+		}
+		books = append(books, book)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("GetBookInfoFuzzyOr: %v", err)
 	}
 
 	return books, nil

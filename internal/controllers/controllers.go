@@ -22,12 +22,23 @@ func GetAllBooks(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, value)
 }
 
-func GetBooksFuzzy(c *gin.Context) {
+func GetBooksFuzzyOr(c *gin.Context) {
+	q := c.Query("q")
+
+	value, err := models.GetBooksFuzzyOr(q)
+	if err != nil {
+		log.Panic(err.Error())
+		return
+	}
+	c.IndentedJSON(http.StatusOK, value)
+}
+
+func GetBooksFuzzyAnd(c *gin.Context) {
 	titleq := c.Query("title")
 	authorq := c.Query("author")
 	textq := c.Query("text")
 
-	value, err := models.GetBooksFuzzy(titleq, authorq, textq)
+	value, err := models.GetBooksFuzzyAnd(titleq, authorq, textq)
 	if err != nil {
 		log.Panic(err.Error())
 		return
